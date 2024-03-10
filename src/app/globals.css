@@ -1,26 +1,29 @@
-*,*::after,*::before{
+*,
+*::after,
+*::before {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-.container{
+.container {
   max-width: 1365px;
   width: 100%;
-  margin:0px auto;
+  margin: 0px auto;
 }
 
-a{
+a {
   text-decoration: none;
 }
 
-ul{
+ul {
   list-style-type: none;
 }
 
-li{
+li {
   list-style: none;
 }
+
 ._signup1 {
   max-width: 600px;
   width: 96%;
@@ -31,13 +34,16 @@ li{
   padding: 20px 40px;
   text-align: center;
 }
+
 ._signup2 {
   font-size: 31px;
   margin-bottom: 14px;
 }
+
 ._signup3 {
   margin-bottom: 12px;
 }
+
 ._signup3 label {
   display: block;
   width: 100%;
@@ -47,6 +53,7 @@ li{
   padding-left: 5px;
   padding-bottom: 4px;
 }
+
 ._signup3 input {
   width: 100%;
   height: 50px;
@@ -54,6 +61,7 @@ li{
   border: 1px solid #ddd;
   border-radius: 6px;
 }
+
 .han_btn {
   display: block;
   width: 100%;
@@ -69,6 +77,24 @@ li{
   transition: all 0.2s ease;
 }
 
-.han_btn:hover{
+.han_btn:hover {
   opacity: .8;
+}
+
+._btnLogout {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+
+._btnLogout button {
+  background: #44d;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px 20px;
+  width: 150px;
+  border-radius: 6px;
 }
