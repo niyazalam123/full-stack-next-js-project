@@ -1,13 +1,14 @@
 "use client";
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
 
 const page = () => {
   const router = useRouter();
   const [isLoading,setIsLoading] = useState(false);
-  const [error,setError] = useState(false);
+  const [btnDisabled,setBtnDisabled]= useState(false);
   const [userData, setUserData] = useState({
     userName: "",
     email: "",
@@ -25,10 +26,30 @@ const page = () => {
     })
   };
 
+  useEffect(()=>{
+    if (userData.userName.length>0 && userData.email.length>0 && userData.password.length>0){
+      setBtnDisabled(false);
+    }
+    else{
+      setBtnDisabled(true)
+    }
+  },[userData])
+
   // click function 
 
-  function handleSignup() {
-
+  async function handleSignup() {
+    try {
+      setIsLoading(true);
+      const response = await axios.post("/api/users/signup",userData);
+      toast.success("signup successfully");
+      router.push("/login");
+    } catch (error:any) {
+      console.log(error.message)
+      toast.error("failed to signup ! try again");
+    }
+    finally{
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -65,9 +86,10 @@ const page = () => {
             onChange={handleChange}
           />
         </div>
-        <button onClick={handleSignup} className='han_btn'>signUp</button>
+        <button onClick={handleSignup} className='han_btn' disabled ={btnDisabled?true:false} style={{cursor:`${btnDisabled || isLoading ? "no-drop":"pointer"}`}}>{isLoading?"processing...":"signUp"}</button>
         <Link href="/login">Login here</Link>
       </div>
+      <Toaster />
     </>
   )
 }
