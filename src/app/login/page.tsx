@@ -1,8 +1,14 @@
 "use client";
 import Link from 'next/link';
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
+import axios from 'axios';
 
 const page = () => {
+  const router = useRouter();
+  const [loading,setLoading] = useState(false);
+  const [btnDisabled,setBtnDisabled] = useState(false);
   const [userData, setUserData] = useState({
     userName: "",
     password: ""
@@ -19,10 +25,28 @@ const page = () => {
     })
   };
 
+  useEffect(()=>{
+    if(userData.password.length>0 && userData.userName.length>0){
+      setBtnDisabled(false);
+    }
+    else{
+      setBtnDisabled(true);
+    }
+  },[userData])
+
   // click function 
-
-  function handleLogin() {
-
+  async function handleLogin() {
+    try {
+      setLoading(true);
+      const response = await axios.post("/api/users/login",userData);
+      toast.success('Login Successfully');
+      router.push("/profile");
+    } catch (error) {
+      toast.error("something went wrong");
+    }
+    finally{
+      setLoading(false);
+    }
   }
 
   return (
@@ -49,9 +73,10 @@ const page = () => {
             onChange={handleChange}
           />
         </div>
-        <button onClick={handleLogin} className='han_btn'>login</button>
+        <button onClick={handleLogin} className='han_btn' disabled={btnDisabled?true:false} style={{cursor:`${btnDisabled || loading ?"no-drop":"pointer"}`}}>{loading?"Processing...":"login"}</button>
         <Link href="/signup">signup here</Link>
       </div>
+      <Toaster />
     </>
   )
 }
