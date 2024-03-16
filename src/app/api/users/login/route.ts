@@ -10,21 +10,18 @@ export async function POST(request: NextRequest) {
     try {
         const reqBody = await request.json();
         const { userName, password } = reqBody;
-        console.log(reqBody);
 
         // check user exist or not 
         const user: any = await User.findOne({ userName });
         if (!user) {
             return NextResponse.json({ error: "User does not exists", success: false }, { status: 400 });
         }
-        console.log("username matched",userName);
+
         // password check
         const validPassword = await bcryptjs.compare(password,user.password);
         if (!validPassword) {
             return NextResponse.json({ error: "inValid Password", success: false }, { status: 400 });
         }
-
-        console.log("username and password matched");
 
         // create token data
         const tokenData = {
@@ -34,7 +31,7 @@ export async function POST(request: NextRequest) {
         };
 
         // create token
-        const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: "1d" })
+        const token = await jwt.sign(tokenData, process.env.TOKEN_SECRET!, { expiresIn: "2d" })
 
         const response = NextResponse.json(
             {
@@ -47,7 +44,7 @@ export async function POST(request: NextRequest) {
         );
 
         // set token to cokkies
-        response.cookies.set("Token", token, { httpOnly: true })
+        response.cookies.set("token", token, { httpOnly: true })
 
         return response;
 

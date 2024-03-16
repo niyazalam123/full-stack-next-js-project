@@ -8,7 +8,7 @@ const page = () => {
   const router = useRouter();
   async function handleLogout() {
     try {
-      const response = await axios.get("/api/users/logout");
+      await axios.get("/api/users/logout");
       toast.success('logout Successfully!!');
       router.push("/login")
     } catch (error: any) {
